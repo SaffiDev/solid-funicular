@@ -5,6 +5,11 @@ using System.Windows.Forms;
 
 namespace LibraryAppWinForms
 {
+    /// <summary>
+    /// Главная форма приложения «Менеджер библиотеки».
+    /// Отображает список книг и предоставляет элементы управления
+    /// для добавления, удаления и поиска книг.
+    /// </summary>
     public partial class Form1 : Form
     {
         private LibraryManager _libMan;
@@ -18,6 +23,10 @@ namespace LibraryAppWinForms
         // Компонент адаптивной верстки
         private TableLayoutPanel _tlpControls;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр формы >.
+        /// Настраивает UI и запускает асинхронную загрузку данных из библиотеки.
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -26,6 +35,10 @@ namespace LibraryAppWinForms
             _ = LoadDataAsync();
         }
 
+        /// <summary>
+        /// Создаёт и размещает все элементы управления на форме:
+        /// таблицу книг, поля ввода, кнопки и панель поиска.
+        /// </summary>
         private void SetupUI()
         {
             // Инициализация элементов
@@ -135,6 +148,10 @@ namespace LibraryAppWinForms
             PerformLayout();
         }
 
+        /// <summary>
+        /// Асинхронно загружает все книги />
+        /// и обновляет источник данных таблицы />.
+        /// </summary>
         private async System.Threading.Tasks.Task LoadDataAsync()
         {
             try
@@ -154,11 +171,20 @@ namespace LibraryAppWinForms
             }
         }
 
+        /// <summary>
+        /// Обрабатывает изменение выбранной строки в таблице.
+        /// Активирует кнопку удаления при любом выделении.
+        /// </summary>
         private void DataGrid_SelectionChanged(object sender, EventArgs e)
         {
             _btnDelete.Enabled = true;
         }
 
+        /// <summary>
+        /// Обрабатывает нажатие кнопки «Поиск».
+        /// Выполняет поиск по названию или автору в зависимости от выбранного типа,
+        /// обновляет таблицу результатами. При отсутствии результатов сбрасывает список.
+        /// </summary>
         private async void btnSearch_Click(object sender, EventArgs e)
         {
             string term = _txtSearch.Text.Trim();
@@ -188,6 +214,10 @@ namespace LibraryAppWinForms
             }
         }
 
+        /// <summary>
+        /// Обрабатывает нажатие кнопки «Добавить».
+        /// После успешного добавления очищает поля и обновляет таблицу.
+        /// </summary>
         private async void btnAdd_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_txtTitle.Text) || string.IsNullOrWhiteSpace(_txtAuthor.Text) || string.IsNullOrWhiteSpace(_txtYear.Text))
@@ -215,6 +245,11 @@ namespace LibraryAppWinForms
             }
         }
 
+        /// <summary>
+        /// Обрабатывает нажатие кнопки «Удалить».
+        /// Запрашивает подтверждение и удаляет выбранную книгу
+        /// через <see cref="LibraryManager"/>, после чего обновляет таблицу.
+        /// </summary>
         private async void btnDelete_Click(object sender, EventArgs e)
         {
             if (_dataGrid.SelectedRows.Count == 0) return;
